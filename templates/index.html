@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpamHam Classifier</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">SpamHam</div>
+            <nav class="nav-bar">
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about">About Us</a></li>
+                    <li><a href="/inspiration">Inspiration</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <main class="container">
+        <section class="hero">
+            <h1>Welcome to SpamHam Classifier</h1>
+            <p>Classify emails as spam or ham with ease and accuracy.</p>
+        </section>
+        <section class="form-section">
+            <h2>Try It Out</h2>
+            <form id="emailForm" method="post" action="/predict">
+                <textarea name="mail_text" id="mailText" placeholder="Enter email text here..." required></textarea>
+                <button type="submit">Classify</button>
+            </form>
+            <div id="result"></div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 SpamHam Classifier. All rights reserved.</p>
+    </footer>
+    <script>
+        document.getElementById('emailForm').onsubmit = async function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const response = await fetch('/predict', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+            document.getElementById('result').innerText = data.error ? data.error : `The email is: ${data.result}`;
+        };
+    </script>
+</body>
+</html>
